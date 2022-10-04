@@ -7,11 +7,14 @@ import UserController from "./controllers/UserController";
 import TuitDao from "./daos/TuitDao";
 import UserDao from "./daos/UserDao";
 import mongoose from "mongoose";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const cors = require("cors");
 const app = express();
 
-mongoose.connect("mongodb://localhost:27017/").then(() => {
+mongoose.connect(process.env.MONGO_URI || "").then(() => {
   console.log("Connected to Mongo.");
 });
 
@@ -33,7 +36,7 @@ new TuitController(app, new TuitDao());
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.
  */
-const port = process.env.port || 4000;
+const port = process.env.PORT || 4000;
 app.listen(port, () => {
   console.log("Started Server on: http://localhost:" + port + "/");
 });
