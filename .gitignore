@@ -4,5 +4,5 @@ build
 data
 out
 coverage
-.env*
+.env.*
 .env
