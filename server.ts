@@ -29,7 +29,7 @@ app.get("/hello", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!")
 );
 
-new UserController(app, new UserDao());
+UserController.getInstance(app);
 new TuitController(app, new TuitDao());
 
 /**

@@ -1,31 +1,59 @@
 import mongoose from "mongoose";
-const UserSchema = new mongoose.Schema(
+import User from "../../models/users/User";
+const UserSchema = new mongoose.Schema<User>(
   {
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    firstName: String,
-    lastName: String,
-    email: String,
-    profilePhoto: String,
-    headerImage: String,
+    username: {
+      type: String,
+      required: true,
+      default: `testusername${Date.now()}`,
+    },
+    password: {
+      type: String,
+      required: true,
+      default: `testpassword${Date.now()}`,
+    },
+    firstName: {
+      type: String,
+      default: null,
+    },
+    lastName: {
+      type: String,
+      default: null,
+    },
+    email: { type: String, required: true, default: `testemail${Date.now()}` },
+    profilePhoto: {
+      type: String,
+      default: null,
+    },
+    headerImage: {
+      type: String,
+      default: null,
+    },
+    biography: {
+      type: String,
+      default: null,
+    },
+    dateOfBirth: {
+      type: Date,
+      default: null,
+    },
     accountType: {
       type: String,
-      default: "PERSONAL",
       enum: ["PERSONAL", "ACADEMIC", "PROFESSIONAL"],
+      default: "PERSONAL",
     },
     maritalStatus: {
       type: String,
-      default: "SINGLE",
       enum: ["MARRIED", "SINGLE", "WIDOWED"],
+      default: "SINGLE",
     },
-    biography: String,
-    dateOfBirth: Date,
-    joined: { type: Date, default: Date.now },
     location: {
-      latitude: { type: Number, default: 0.0 },
-      longitude: { type: Number, default: 0.0 },
+      latitude: Number,
+      longitude: Number,
     },
+    salary: { type: Number, default: 50000 },
   },
   { collection: "users" }
 );
+
 export default UserSchema;
