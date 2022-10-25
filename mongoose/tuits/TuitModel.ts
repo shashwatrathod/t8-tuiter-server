@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import TuitSchema from "../schemas/TuitSchema";
+import TuitSchema from "./TuitSchema";
 
 const TuitModel = mongoose.model("TuitModel", TuitSchema);
 

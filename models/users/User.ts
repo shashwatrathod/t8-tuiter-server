@@ -1,8 +1,10 @@
 import AccountType from "./AccountType";
 import MaritalStatus from "./MaritalStatus";
 import Location from "./Location";
+import { ObjectId } from "mongoose";
 
 export default class User {
+  private _id: ObjectId | null = null;
   private username: string = "";
   private password: string = "";
   private firstName: string | null = null;
