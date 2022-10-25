@@ -30,7 +30,7 @@ app.get("/hello", (req: Request, res: Response) =>
 );
 
 UserController.getInstance(app);
-new TuitController(app, new TuitDao());
+TuitController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
