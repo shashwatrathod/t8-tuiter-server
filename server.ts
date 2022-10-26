@@ -9,6 +9,7 @@ import dotenv from "dotenv";
 import LikeController from "./controllers/LikeController";
 import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
+import MessageController from "./controllers/MessageController";
 
 dotenv.config();
 
@@ -35,6 +36,7 @@ TuitController.getInstance(app);
 LikeController.getInstance(app);
 FollowController.getInstance(app);
 BookmarkController.getInstance(app);
+MessageController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally

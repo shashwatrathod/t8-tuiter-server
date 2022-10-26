@@ -1,5 +1,9 @@
 import mongoose from "mongoose";
 import User from "../../models/users/User";
+
+/**
+ * @file Implements mongoose schema for users
+ */
 const UserSchema = new mongoose.Schema<User>(
   {
     username: {
