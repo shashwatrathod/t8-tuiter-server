@@ -8,6 +8,7 @@ import mongoose from "mongoose";
 import dotenv from "dotenv";
 import LikeController from "./controllers/LikeController";
 import FollowController from "./controllers/FollowController";
+import BookmarkController from "./controllers/BookmarkController";
 
 dotenv.config();
 
@@ -33,6 +34,7 @@ UserController.getInstance(app);
 TuitController.getInstance(app);
 LikeController.getInstance(app);
 FollowController.getInstance(app);
+BookmarkController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
