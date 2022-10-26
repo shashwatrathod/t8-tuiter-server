@@ -4,10 +4,12 @@
 import express, {Request, Response} from 'express';
 import TuitController from "./controllers/TuitController";
 import UserController from "./controllers/UserController";
-import TuitDao from "./daos/TuitDao";
-import UserDao from "./daos/UserDao";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import LikeController from "./controllers/LikeController";
+import FollowController from "./controllers/FollowController";
+import BookmarkController from "./controllers/BookmarkController";
+import MessageController from "./controllers/MessageController";
 
 dotenv.config();
 
@@ -29,8 +31,12 @@ app.get("/hello", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!")
 );
 
-new UserController(app, new UserDao());
-new TuitController(app, new TuitDao());
+UserController.getInstance(app);
+TuitController.getInstance(app);
+LikeController.getInstance(app);
+FollowController.getInstance(app);
+BookmarkController.getInstance(app);
+MessageController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
