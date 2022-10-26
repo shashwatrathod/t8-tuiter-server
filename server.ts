@@ -7,6 +7,7 @@ import UserController from "./controllers/UserController";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
 import LikeController from "./controllers/LikeController";
+import FollowController from "./controllers/FollowController";
 
 dotenv.config();
 
@@ -31,6 +32,7 @@ app.get("/hello", (req: Request, res: Response) =>
 UserController.getInstance(app);
 TuitController.getInstance(app);
 LikeController.getInstance(app);
+FollowController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally

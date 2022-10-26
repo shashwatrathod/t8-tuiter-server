@@ -9,7 +9,6 @@ const TuitSchema = new mongoose.Schema<Tuit>(
     image: String,
     youtube: String,
     avatarLogo: String,
-    imageOverlay: String,
     stats: {
       replies: { type: Number, default: 0 },
       retuits: { type: Number, default: 0 },
