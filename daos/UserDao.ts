@@ -24,6 +24,13 @@ export default class UserDao implements IUserDao {
   private constructor() {}
 
   /**
+   * Uses UserModel to delete the first user that matches the criteria supplied
+   * 
+   * @param condition the criteria based on which the user will be deleted
+   */
+  deleteUserByCondition = async (condition: any): Promise<any> => UserModel.deleteOne(condition);
+
+  /**
    * Uses UserModel to retrieve all user documents from users collection
    * @returns Promise To be notified when the users are retrieved from
    * database
@@ -67,4 +74,5 @@ export default class UserDao implements IUserDao {
    * database
    */
   deleteAllUsers = async (): Promise<any> => UserModel.deleteMany({});
+
 }
