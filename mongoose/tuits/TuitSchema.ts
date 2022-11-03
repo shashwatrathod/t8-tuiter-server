@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 import Tuit from "../../models/tuits/Tuit";
 
+/**
+ * @file defines a schema for a Bookmark
+ */
+
 const TuitSchema = new mongoose.Schema<Tuit>(
   {
     tuit: { type: String, required: true },

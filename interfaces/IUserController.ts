@@ -10,4 +10,5 @@ export default interface IUserController {
   updateUser(req: Request, res: Response): void;
   deleteUser(req: Request, res: Response): void;
   deleteAllUsers(req: Request, res: Response): void;
+  deleteUserByCondition(req: Request, res: Response): void;
 }
