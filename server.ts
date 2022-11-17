@@ -2,6 +2,7 @@
  * @file Implements an Express Node HTTP server.
  */
 import express, {Request, Response} from 'express';
+import session from "express-session";
 import TuitController from "./controllers/TuitController";
 import UserController from "./controllers/UserController";
 import mongoose from "mongoose";
@@ -10,18 +11,35 @@ import LikeController from "./controllers/LikeController";
 import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
+import { SessionOptions } from "http2";
+const cors = require("cors");
 
 dotenv.config();
-
-const cors = require("cors");
-const app = express();
 
 mongoose.connect(process.env.MONGO_URI || "").then(() => {
   console.log("Connected to Mongo.");
 });
 
+const app = express();
+
+const sess: session.SessionOptions = {
+  secret: process.env.SECRET || "somethingVerySecret",
+  cookie: {
+    secure: false,
+  },
+};
+
+if (process.env.ENV === "PRODUCTION") {
+  app.set("trust proxy", 1); // trust first proxy
+  sess.cookie = {
+    ...sess.cookie,
+    secure: true,
+  }; // serve secure cookies
+}
+
 app.use(cors());
 app.use(express.json());
+app.use(session(sess));
 
 app.get("/", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!!!!")
