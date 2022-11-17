@@ -12,6 +12,9 @@ import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
 import AuthController from "./controllers/AuthController";
+//@ts-ignore
+import volleyball from "volleyball";
+
 const cors = require("cors");
 
 dotenv.config();
@@ -40,6 +43,8 @@ if (process.env.ENV === "PRODUCTION") {
 app.use(cors());
 app.use(express.json());
 app.use(session(sess));
+app.use(volleyball);
+
 
 app.get("/", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!!!!")

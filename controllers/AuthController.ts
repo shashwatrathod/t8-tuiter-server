@@ -62,7 +62,7 @@ export default class AuthController implements IAuthController {
       } else {
         const insertedUser = await AuthController.userDao.createUser(newUser);
         insertedUser.password = "";
-        (req.session as Session)["profile"] = insertedUser;
+        (req.session as Session).profile = insertedUser;
         res.json(insertedUser);
       }
     } catch (err) {
