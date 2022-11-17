@@ -11,7 +11,7 @@ import LikeController from "./controllers/LikeController";
 import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
-import { SessionOptions } from "http2";
+import AuthController from "./controllers/AuthController";
 const cors = require("cors");
 
 dotenv.config();
@@ -55,6 +55,7 @@ LikeController.getInstance(app);
 FollowController.getInstance(app);
 BookmarkController.getInstance(app);
 MessageController.getInstance(app);
+AuthController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
