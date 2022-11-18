@@ -4,6 +4,7 @@ import { Express, Request, Response } from "express";
 import IAuthController from "../interfaces/IAuthController";
 import IUserDao from "../interfaces/IUserDao";
 import { Session } from "..";
+import { nextTick } from "process";
 
 const saltRounds = 10;
 
@@ -30,7 +31,9 @@ export default class AuthController implements IAuthController {
   public static getInstance = (app: Express): AuthController => {
     if (AuthController.authController === null) {
       AuthController.authController = new AuthController();
-      app.post("/api/auth/signup", AuthController.authController.signup);
+      app.post("/api/auth", AuthController.authController.signup);
+      app.get("/api/auth", AuthController.authController.profile);
+      app.delete("/api/auth", AuthController.authController.logout);
     }
 
     return AuthController.authController;
@@ -69,5 +72,36 @@ export default class AuthController implements IAuthController {
       console.log(err);
       res.sendStatus(500);
     }
+  };
+
+  /**
+   * Determine if someone is logged in or not.
+   * @param req request from client
+   * @param res response containing the profile if logged in.
+   */
+  profile = async (req: Request, res: Response): Promise<void> => {
+    const { profile } = req.session as Session;
+    if (profile) {
+      profile.password = "";
+      res.json(profile);
+    } else {
+      res.sendStatus(403);
+    }
+  };
+
+  /**
+   * Determine if someone is logged in or not.
+   * @param req request from client
+   * @param res response containing the profile if logged in.
+   */
+  logout = async (req: Request, res: Response): Promise<void> => {
+    req.session.destroy((err) => {
+      if (!err) {
+        res.sendStatus(200);
+      } else {
+        console.log(err);
+        res.sendStatus(500);
+      }
+    });
   };
 }

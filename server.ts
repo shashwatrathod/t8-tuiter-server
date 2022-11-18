@@ -40,11 +40,15 @@ if (process.env.ENV === "PRODUCTION") {
   }; // serve secure cookies
 }
 
-app.use(cors());
+const corsConfig = {
+  origin: true,
+  credentials: true,
+};
+
+app.use(cors(corsConfig));
 app.use(express.json());
 app.use(session(sess));
 app.use(volleyball);
-
 
 app.get("/", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!!!!")
@@ -54,13 +58,13 @@ app.get("/hello", (req: Request, res: Response) =>
   res.send("Welcome to Foundation of Software Engineering!")
 );
 
+AuthController.getInstance(app);
 UserController.getInstance(app);
 TuitController.getInstance(app);
 LikeController.getInstance(app);
 FollowController.getInstance(app);
 BookmarkController.getInstance(app);
 MessageController.getInstance(app);
-AuthController.getInstance(app);
 
 /**
  * Start a server listening at port 4000 locally
