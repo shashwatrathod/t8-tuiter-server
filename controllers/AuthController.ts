@@ -97,7 +97,6 @@ export default class AuthController implements IAuthController {
   login = async (req: Request, res: Response): Promise<void> => {
     const user = req.body;
     const password = user.password;
-    console.log(req.body);
     const existingUser = await AuthController.userDao.findUserByCondition({
       username: req.body.username,
     });
