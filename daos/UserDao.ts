@@ -50,8 +50,10 @@ export default class UserDao implements IUserDao {
    * @param condition the predicate to find user
    * @returns a user if found else null
    */
-  findUserByCondition = async (condition: any): Promise<User | null> =>
-    UserModel.findOne(condition);
+  findUserByCondition = async (condition: any): Promise<User | null> => {
+    console.log(condition);
+    return UserModel.findOne(condition);
+  };
 
   /**
    * Inserts user instance into the database

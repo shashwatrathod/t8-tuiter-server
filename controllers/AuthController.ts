@@ -4,7 +4,6 @@ import { Express, Request, Response } from "express";
 import IAuthController from "../interfaces/IAuthController";
 import IUserDao from "../interfaces/IUserDao";
 import { Session } from "..";
-import { nextTick } from "process";
 
 const saltRounds = 10;
 
@@ -31,7 +30,8 @@ export default class AuthController implements IAuthController {
   public static getInstance = (app: Express): AuthController => {
     if (AuthController.authController === null) {
       AuthController.authController = new AuthController();
-      app.post("/api/auth", AuthController.authController.signup);
+      app.post("/api/auth/signup", AuthController.authController.signup);
+      app.post("/api/auth/login", AuthController.authController.login);
       app.get("/api/auth", AuthController.authController.profile);
       app.delete("/api/auth", AuthController.authController.logout);
     }
@@ -84,6 +84,35 @@ export default class AuthController implements IAuthController {
     if (profile) {
       profile.password = "";
       res.json(profile);
+    } else {
+      res.sendStatus(403);
+    }
+  };
+
+  /**
+   * Determine if someone is logged in or not.
+   * @param req request from client
+   * @param res response containing the profile if logged in.
+   */
+  login = async (req: Request, res: Response): Promise<void> => {
+    const user = req.body;
+    const password = user.password;
+    console.log(req.body);
+    const existingUser = await AuthController.userDao.findUserByCondition({
+      username: req.body.username,
+    });
+
+    if (!existingUser) {
+      res.sendStatus(403);
+      return;
+    }
+
+    const match = await bcrypt.compare(password, existingUser.password);
+
+    if (match) {
+      existingUser.password = "*****";
+      (req.session as Session).profile = existingUser;
+      res.json(existingUser);
     } else {
       res.sendStatus(403);
     }
