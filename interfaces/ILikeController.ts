@@ -8,4 +8,5 @@ export default interface ILikeController {
   findAllTuitsLikedByUser(req: Request, res: Response): void;
   userLikesTuit(req: Request, res: Response): void;
   userUnlikesTuit(req: Request, res: Response): void;
+  findUserLikesTuit(req: Request, res: Response): void;
 }

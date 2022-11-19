@@ -143,4 +143,24 @@ export default class DislikeController implements IDislikeController {
     DislikeController.dislikeDao
       .userUnDislikesTuit(req.params.tid, req.params.uid)
       .then((status) => res.send(status));
+
+  /**
+   * Find if a user has disliked this tuit
+   * @param {Request} req Represents request from client, including the
+   * path parameters uid and tid representing the user that is disliking the tuit
+   * and the tuit being disliked
+   * @param {Response} res Represents response to client, including the
+   * body formatted as JSON containing the new dislikes that was inserted in the
+   * database
+   */
+  findUserDislikesTuit = (req: Request, res: Response) => {
+    const userId =
+      req.params.uid === "me" && (req.session as Session).profile
+        ? (req.session as Session).profile._id
+        : req.params.uid;
+
+    DislikeController.dislikeDao
+      .findUserDislikesTuit(req.params.tid, userId)
+      .then((response) => res.send(response));
+  };
 }

@@ -8,4 +8,5 @@ export default interface IDislikeController {
   findAllTuitsDislikedByUser(req: Request, res: Response): void;
   userDislikesTuit(req: Request, res: Response): void;
   userUnDislikesTuit(req: Request, res: Response): void;
+  findUserDislikesTuit(req: Request, res: Response): void;
 }

@@ -140,4 +140,24 @@ export default class LikeController implements ILikeController {
     LikeController.likeDao
       .userUnlikesTuit(req.params.tid, req.params.uid)
       .then((status) => res.send(status));
+
+  /**
+   * Find if a user has liked this tuit
+   * @param {Request} req Represents request from client, including the
+   * path parameters uid and tid representing the user that is liking the tuit
+   * and the tuit being liked
+   * @param {Response} res Represents response to client, including the
+   * body formatted as JSON containing the new likes that was inserted in the
+   * database
+   */
+  findUserLikesTuit = (req: Request, res: Response) => {
+    const userId =
+      req.params.uid === "me" && (req.session as Session).profile
+        ? (req.session as Session).profile._id
+        : req.params.uid;
+
+    LikeController.likeDao
+      .findUserLikesTuit(req.params.tid, userId)
+      .then((response) => res.send(response));
+  };
 }
