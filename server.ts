@@ -30,6 +30,7 @@ const sess: session.SessionOptions = {
   secret: process.env.SECRET || "somethingVerySecret",
   cookie: {
     secure: false,
+    sameSite: "lax",
   },
 };
 
@@ -38,6 +39,7 @@ if (process.env.ENV === "PRODUCTION") {
   sess.cookie = {
     ...sess.cookie,
     secure: true,
+    sameSite: "none",
   }; // serve secure cookies
 }
 
