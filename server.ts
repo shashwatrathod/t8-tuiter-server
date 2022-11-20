@@ -14,6 +14,7 @@ import MessageController from "./controllers/MessageController";
 import AuthController from "./controllers/AuthController";
 //@ts-ignore
 import volleyball from "volleyball";
+import DislikeController from "./controllers/DislikeController";
 
 const cors = require("cors");
 
@@ -65,7 +66,7 @@ LikeController.getInstance(app);
 FollowController.getInstance(app);
 BookmarkController.getInstance(app);
 MessageController.getInstance(app);
-
+DislikeController.getInstance(app);
 /**
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.

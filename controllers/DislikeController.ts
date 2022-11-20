@@ -52,6 +52,10 @@ export default class DislikeController implements IDislikeController {
         "/api/users/:uid/dislikes/:tid",
         DislikeController.dislikeController.userDislikesTuit
       );
+      app.get(
+        "/api/users/:uid/dislikes/:tid",
+        DislikeController.dislikeController.findUserDislikesTuit
+      );
       app.delete(
         "/api/users/:uid/undislikes/:tid",
         DislikeController.dislikeController.userUnDislikesTuit
@@ -159,8 +163,10 @@ export default class DislikeController implements IDislikeController {
         ? (req.session as Session).profile._id
         : req.params.uid;
 
+      console.log("here")
     DislikeController.dislikeDao
       .findUserDislikesTuit(req.params.tid, userId)
-      .then((response) => res.send(response));
+      .then((response) => res.send(response))
+      .catch((e) => console.log(e));
   };
 }
