@@ -10,6 +10,7 @@ import Stats from "./Stats";
  * @property {string} image URL of any image associated with this tuit
  * @property {string} youtube URL of the YT video associated with this tuit
  * @property {string} avatarLogo URL of the avatar logo for this tuit
+ * @property {number} v version number of this tuit. Version number gets incremented everytime a tuit is updated
  */
 export default interface Tuit {
   _id: ObjectId;
@@ -20,4 +21,5 @@ export default interface Tuit {
   youtube?: String;
   avatarLogo?: String;
   stats: Stats;
+  v: Number;
 }
