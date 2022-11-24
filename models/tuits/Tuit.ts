@@ -21,5 +21,5 @@ export default interface Tuit {
   youtube?: String;
   avatarLogo?: String;
   stats: Stats;
-  v: Number;
+  v?: Number;
 }

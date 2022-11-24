@@ -19,6 +19,7 @@ const TuitSchema = new mongoose.Schema<Tuit>(
       likes: { type: Number, default: 0, min: 0 },
       dislikes: { type: Number, default: 0, min: 0 },
     },
+    v: { type: Number, default: 1 },
   },
   { collection: "tuits" }
 );
