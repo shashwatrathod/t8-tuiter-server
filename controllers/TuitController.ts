@@ -1,9 +1,11 @@
 import { Request, Response, Express } from "express";
 import { Session } from "..";
 import TuitDao from "../daos/TuitDao";
+import TuitVersionDao from "../daos/TuitVersionDao";
 import ITuitController from "../interfaces/ITuitController";
 import ITuitDao from "../interfaces/ITuitDao";
 import Tuit from "../models/tuits/Tuit";
+import TuitVersion from "../models/tuits/TuitVersion";
 
 /**
  * @class TuitController Implements RESTful Web service API for tuits resource.
@@ -24,6 +26,7 @@ import Tuit from "../models/tuits/Tuit";
 export default class TuitController implements ITuitController {
   private static tuitDao: ITuitDao = TuitDao.getInstance();
   private static tuitController: TuitController | null = null;
+  private static tuitVersionDao: TuitVersionDao = TuitVersionDao.getInstance();
 
   /**
    * Creates singleton controller instance
@@ -46,6 +49,7 @@ export default class TuitController implements ITuitController {
       );
       app.put("/api/tuits/:tid", TuitController.tuitController.updateTuit);
       app.delete("/api/tuits/:tid", TuitController.tuitController.deleteTuit);
+      app.get("/api/tuits/:tid/versions", TuitController.tuitController.getVersions)
     }
     return TuitController.tuitController;
   };
@@ -121,6 +125,17 @@ export default class TuitController implements ITuitController {
     TuitController.tuitDao
       .updateTuit(req.params.tid, req.body)
       .then((status) => res.send(status));
+  
+  /**
+   * @param {Request} req Represents request from client, including path
+   * parameter tid identifying the primary key of the tuit to be modified
+   * @param {Response} res Represents response to client, including status
+   * on whether updating a tuit was successful or not
+   */
+   editTuit = (req: Request, res: Response) =>
+   TuitController.tuitVersionDao
+   .createTuitVersion(req.params.tuit,req.params.tid,parseInt(req.params.version))
+   .then((status)=> res.send(status));
 
   /**
    * @param {Request} req Represents request from client, including path
@@ -132,4 +147,15 @@ export default class TuitController implements ITuitController {
     TuitController.tuitDao
       .deleteTuit(req.params.tid)
       .then((status) => res.send(status));
+
+  /**
+   * @param {Request} req Represents request from client, including path
+   * parameter tid identifying the primary key of the tuit whose 
+   * version history to be viewed.
+   * @param {Response} res Represents response to client, array of all the versions of the 
+   * Tuit.
+   */
+  getVersions = (req: Request, res: Response) =>
+    TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
+    .then((tuitVersion: TuitVersion[]) => res.json(tuitVersion))
 };

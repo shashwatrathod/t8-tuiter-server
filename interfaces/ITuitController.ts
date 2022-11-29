@@ -10,4 +10,5 @@ export default interface ITuitController {
     createTuitByUser (req: Request, res: Response): void;
     updateTuit (req: Request, res: Response): void;
     deleteTuit (req: Request, res: Response): void;
+    getVersions (req: Request, res: Response): void;
 };

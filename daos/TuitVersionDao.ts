@@ -40,4 +40,7 @@ export default class TuitVersionDao implements ITuitVersionDao {
    */
   findAllPreviousVersions = (tid: string): Promise<TuitVersion[]> =>
     TuitVersionModel.find({ tid }).exec();
-}
+
+
+  }
+    
