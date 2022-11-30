@@ -50,7 +50,7 @@ export default class TuitController implements ITuitController {
       app.put("/api/tuits/:tid", TuitController.tuitController.updateTuit);
       app.delete("/api/tuits/:tid", TuitController.tuitController.deleteTuit);
       app.get("/api/tuits/:tid/versions", TuitController.tuitController.getVersions);
-      app.put("/api/edit", TuitController.tuitController.editTuit);
+      app.put("/api/tuits/:tid/edit", TuitController.tuitController.editTuit);
     }
     return TuitController.tuitController;
   };
@@ -135,16 +135,16 @@ export default class TuitController implements ITuitController {
    */
    editTuit = async (req: Request, res: Response) => {
     //get the tuit from Tuits collection by the req. body id
-    const ogTuit = await TuitController.tuitDao.findTuitById(req.body.tid)
+    const ogTuit = await TuitController.tuitDao.findTuitById(req.params.tid)
     // add that tuit to the tuit version 
     TuitController.tuitVersionDao
     //@ts-ignore
     .createTuitVersion(ogTuit._id,ogTuit.tuit,ogTuit.v!)
     //update the tuits text
-    TuitController.tuitDao.updateTuit(req.body.tid,req.body).then((status)=>res.send(status))
+    TuitController.tuitDao.updateTuit(req.params.tid,req.body).then((status)=>res.send(status))
     //update the tuit version
     //@ts-ignore
-    TuitController.tuitDao.updateVersion(req.body.tid)
+    TuitController.tuitDao.updateVersion(req.params.tid)
    }
    
 
