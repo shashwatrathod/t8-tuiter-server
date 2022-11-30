@@ -49,7 +49,8 @@ export default class TuitController implements ITuitController {
       );
       app.put("/api/tuits/:tid", TuitController.tuitController.updateTuit);
       app.delete("/api/tuits/:tid", TuitController.tuitController.deleteTuit);
-      app.get("/api/tuits/:tid/versions", TuitController.tuitController.getVersions)
+      app.get("/api/tuits/:tid/versions", TuitController.tuitController.getVersions);
+      app.put("/api/edit", TuitController.tuitController.editTuit);
     }
     return TuitController.tuitController;
   };
@@ -132,10 +133,20 @@ export default class TuitController implements ITuitController {
    * @param {Response} res Represents response to client, including status
    * on whether updating a tuit was successful or not
    */
-   editTuit = (req: Request, res: Response) =>
-   TuitController.tuitVersionDao
-   .createTuitVersion(req.params.tuit,req.params.tid,parseInt(req.params.version))
-   .then((status)=> res.send(status));
+   editTuit = async (req: Request, res: Response) => {
+    //get the tuit from Tuits collection by the req. body id
+    const ogTuit = await TuitController.tuitDao.findTuitById(req.body.tid)
+    // add that tuit to the tuit version 
+    TuitController.tuitVersionDao
+    //@ts-ignore
+    .createTuitVersion(ogTuit._id,ogTuit.tuit,ogTuit.v!)
+    //update the tuits text
+    TuitController.tuitDao.updateTuit(req.body.tid,req.body).then((status)=>res.send(status))
+    //update the tuit version
+    //@ts-ignore
+    TuitController.tuitDao.updateVersion(req.body.tid)
+   }
+   
 
   /**
    * @param {Request} req Represents request from client, including path
@@ -155,7 +166,9 @@ export default class TuitController implements ITuitController {
    * @param {Response} res Represents response to client, array of all the versions of the 
    * Tuit.
    */
-  getVersions = (req: Request, res: Response) =>
+  getVersions = (req: Request, res: Response) =>{
     TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
     .then((tuitVersion: TuitVersion[]) => res.json(tuitVersion))
+  }
+    
 };

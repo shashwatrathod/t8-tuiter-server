@@ -11,4 +11,5 @@ export default interface ITuitController {
     updateTuit (req: Request, res: Response): void;
     deleteTuit (req: Request, res: Response): void;
     getVersions (req: Request, res: Response): void;
+    editTuit (req: Request, res: Response): void;
 };
