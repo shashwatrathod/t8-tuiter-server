@@ -166,9 +166,16 @@ export default class TuitController implements ITuitController {
    * @param {Response} res Represents response to client, array of all the versions of the 
    * Tuit.
    */
-  getVersions = (req: Request, res: Response) =>{
-    TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
-    .then((tuitVersion: TuitVersion[]) => res.json(tuitVersion))
+  getVersions = async (req: Request, res: Response) =>{
+    const currentTuit = await TuitController.tuitDao.findTuitById(req.params.tid)
+    // TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
+    // .then((tuitVersion: TuitVersion[]) => res.json(tuitVersion))
+    const currentTuitVersion = {"_id":currentTuit._id,"tuit":currentTuit.tuit,
+        "v":currentTuit.v,"editedOn":currentTuit.postedOn}
+    const prevTuitVersion = await TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
+    var allVersions = Object.assign({},currentTuitVersion,prevTuitVersion)
+    return(res.json(allVersions))
+    
   }
     
 };
