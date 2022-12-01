@@ -57,16 +57,25 @@ export default class TuitDao implements ITuitDao {
    * @param tid id of the tuit to be modified
    * @param tuit modified tuit
    */
-  updateTuit = async (tid: string, tuit: Tuit): Promise<any> =>
-    TuitModel.updateOne({ _id: tid }, { $set: tuit });
-
+  updateTuit = async (tid: string, tuit: Tuit): Promise<any> => {
+    TuitModel.updateOne({ _id: tid }, { $set: tuit }).exec();
+  }
+  
+  /**
+   * Increment version of existing tuit
+   * @param tid id of the tuit to be modified
+   */
+  updateVersion = async (tid: string): Promise<any> => {
+    TuitModel.updateOne({ _id: tid }, { $inc: {v:1} }).exec();
+  }
   /**
    * Update a tuit's stats
    * @param tid id of the tuit
    * @param newStats new stats for the tuit
    */
   updateStats = async (tid: string, newStats: Stats): Promise<any> =>
-    TuitModel.updateOne({ _id: tid }, { $set: { stats: newStats } });
+    TuitModel.updateOne({ _id: tid },
+       { $set: { stats: newStats } });
 
   /**
    * Delete the tuit specified by tid
