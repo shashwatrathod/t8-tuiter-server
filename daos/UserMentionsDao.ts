@@ -23,5 +23,7 @@ import TuitModel from "../mongoose/tuits/TuitModel";
      return UserMentionsDao.userMentionsDao;
    };
 
+   findUserLikesTuit = async (uid: string[]): Promise<Tuit[]> =>
+      TuitModel.find().where('_id').in(uid).exec();
  }
  
