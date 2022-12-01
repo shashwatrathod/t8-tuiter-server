@@ -58,10 +58,12 @@ export default class TuitController implements ITuitController {
    * @param {Response} res Represents response to client, including the
    * body formatted as JSON arrays containing the tuit objects
    */
-  findAllTuits = (req: Request, res: Response) =>
+  findAllTuits = async(req: Request, res: Response) =>{
     TuitController.tuitDao
       .findAllTuits()
       .then((tuits: Tuit[]) => res.json(tuits));
+    }
+
 
   /**
    * Retrieves all tuits from the database for a particular user and returns
