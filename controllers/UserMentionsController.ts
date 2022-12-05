@@ -40,7 +40,7 @@ import Tuit from "../models/tuits/Tuit";
      if (UserMentionsController.userMentionsController === null) {
        UserMentionsController.userMentionsController = new UserMentionsController();
        app.get(
-         "/api/mentions",
+         "/api/users/:uid/mentions",
          UserMentionsController.userMentionsController.findUserLikesTuit
        );
        
