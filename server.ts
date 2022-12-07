@@ -31,7 +31,7 @@ const sess: session.SessionOptions = {
   cookie: {
     secure: false,
     sameSite: "lax",
-    httpOnly: false,
+    // httpOnly: false,
   },
 };
 
@@ -41,7 +41,7 @@ if (process.env.ENV === "PRODUCTION") {
     ...sess.cookie,
     secure: true,
     sameSite: "none",
-    domain: process.env.FRONTEND_DOMAIN,
+    // domain: process.env.FRONTEND_DOMAIN,
   }; // serve secure cookies
 }
 
