@@ -41,6 +41,7 @@ if (process.env.ENV === "PRODUCTION") {
     ...sess.cookie,
     secure: true,
     sameSite: "none",
+    domain: process.env.FRONTEND_DOMAIN,
   }; // serve secure cookies
 }
 
