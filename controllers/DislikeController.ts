@@ -104,6 +104,12 @@ export default class DislikeController implements IDislikeController {
     const { profile } = req.session as Session;
     const userId = uid === "me" && profile ? profile._id : uid;
 
+    if (userId === "me") {
+      console.log("User is not logged in.");
+      res.sendStatus(403);
+      return;
+    }
+
     try {
       const userAlreadyDislikedTuit =
         await DislikeController.dislikeDao.findUserDislikesTuit(tid, userId);
@@ -163,7 +169,12 @@ export default class DislikeController implements IDislikeController {
         ? (req.session as Session).profile._id
         : req.params.uid;
 
-      console.log("here")
+    if (userId === "me") {
+      console.log("User is not logged in.");
+      res.sendStatus(403);
+      return;
+    }
+
     DislikeController.dislikeDao
       .findUserDislikesTuit(req.params.tid, userId)
       .then((response) => res.send(response))

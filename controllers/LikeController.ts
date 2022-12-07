@@ -104,6 +104,12 @@ export default class LikeController implements ILikeController {
     const { profile } = req.session as Session;
     const userId = uid === "me" && profile ? profile._id : uid;
 
+    if (userId === "me") {
+      console.log("User is not logged in.");
+      res.sendStatus(403);
+      return;
+    }
+
     try {
       const userAlreadyLikedTuit =
         await LikeController.likeDao.findUserLikesTuit(tid, userId);
@@ -165,6 +171,12 @@ export default class LikeController implements ILikeController {
       req.params.uid === "me" && (req.session as Session).profile
         ? (req.session as Session).profile._id
         : req.params.uid;
+
+    if (userId === "me") {
+      console.log("User is not logged in.");
+      res.sendStatus(403);
+      return;
+    }
 
     LikeController.likeDao
       .findUserLikesTuit(req.params.tid, userId)

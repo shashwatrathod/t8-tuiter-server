@@ -81,6 +81,12 @@ export default class TuitController implements ITuitController {
         ? (req.session as Session).profile._id
         : req.params.uid;
 
+    if (uid === "me") {
+      console.log("User is not logged in.");
+      res.sendStatus(403);
+      return;
+    }
+
     TuitController.tuitDao
       .findAllTuitsByUser(uid)
       .then((tuits: Tuit[]) => res.json(tuits));
@@ -110,6 +116,12 @@ export default class TuitController implements ITuitController {
       req.params.uid === "me" && (req.session as Session).profile
         ? (req.session as Session).profile._id
         : req.params.uid;
+
+    if (uid === "me") {
+      console.log("User is not logged in.");
+      res.sendStatus(403);
+      return;
+    }
 
     TuitController.tuitDao
       .createTuitByUser(uid, req.body)
