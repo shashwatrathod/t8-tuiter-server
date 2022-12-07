@@ -31,6 +31,7 @@ const sess: session.SessionOptions = {
   cookie: {
     secure: false,
     sameSite: "lax",
+    httpOnly: false,
   },
 };
 
