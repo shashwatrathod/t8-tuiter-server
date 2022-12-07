@@ -173,7 +173,7 @@ export default class TuitController implements ITuitController {
     const currentTuitVersion = {"_id":currentTuit._id,"tuit":currentTuit.tuit,
         "v":currentTuit.v,"editedOn":currentTuit.postedOn}
     const prevTuitVersion = await TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
-    var allVersions = Object.assign({},currentTuitVersion,prevTuitVersion)
+    var allVersions = Object.assign({},{currentTuitVersion},prevTuitVersion)
     return(res.json(allVersions))
     
   }
