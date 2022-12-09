@@ -1,12 +1,12 @@
 /**
- * @file Controller Interface for Message resource
+ * @file Controller Interface for UserMentions resource
  */
  import { Request, Response } from "express";
 
  /**
-  * The interface contains the method signatures that need to be implemented by the Controller for Message resource
+  * The interface contains the method signatures that need to be implemented by the Controller for UserMentions resource
   */
  export default interface IUserMentionsController {
-  findUserLikesTuit(req: Request, res: Response): void;
+  findUserMentions(req: Request, res: Response): void;
  }
  
