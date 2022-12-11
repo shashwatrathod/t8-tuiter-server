@@ -12,6 +12,7 @@ import FollowController from "./controllers/FollowController";
 import BookmarkController from "./controllers/BookmarkController";
 import MessageController from "./controllers/MessageController";
 import AuthController from "./controllers/AuthController";
+import UserMentionsController from "./controllers/UserMentionsController";
 //@ts-ignore
 import volleyball from "volleyball";
 import DislikeController from "./controllers/DislikeController";
@@ -71,6 +72,7 @@ FollowController.getInstance(app);
 BookmarkController.getInstance(app);
 MessageController.getInstance(app);
 DislikeController.getInstance(app);
+UserMentionsController.getInstance(app);
 /**
  * Start a server listening at port 4000 locally
  * but use environment variable PORT on Heroku if available.
