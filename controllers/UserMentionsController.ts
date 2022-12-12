@@ -46,24 +46,27 @@
     * Find the tuits that mention the username of the user specified by the userId in this request's params. e.g. "This is a sample tuit from @johndoe"
     */
 findUserMentions = async (req: Request, res: Response) => {
-    const userId =
-      req.params.uid === "me" && (req.session as Session).profile
-        ? (req.session as Session).profile._id
-        : req.params.uid;
+  try 
+  {const userId =
+    req.params.uid === "me" && (req.session as Session).profile
+      ? (req.session as Session).profile._id
+      : req.params.uid;
 
-    if (userId === "me") res.sendStatus(403); // If the user is not logged in, but still passes "me", we don't want to process this request any further
+  if (userId === "me") res.sendStatus(403); // If the user is not logged in, but still passes "me", we don't want to process this request any further
+  const user = await UserMentionsController.userDao.findUserById(userId);
 
-    const user = await UserMentionsController.userDao.findUserById(userId);
+  if (!user) res.sendStatus(400); // The user with given ID doesn't exists. This is a bad request
 
-    if (!user) res.sendStatus(400); // The user with given ID doesn't exists. This is a bad request
+  const allTuits = await UserMentionsController.tuitDao.findAllTuits();
 
-    const allTuits = await UserMentionsController.tuitDao.findAllTuits();
+  let username = `@${user?.username.toLocaleLowerCase()}`;
 
-    let username = `@${user?.username.toLocaleLowerCase()}`;
+  const mentionedTuits = allTuits.filter(tuit => tuit.tuit.toLocaleLowerCase().includes(username));
 
-    const mentionedTuits = allTuits.filter(tuit => tuit.tuit.toLocaleLowerCase().includes(username));
-
-    res.json(mentionedTuits);
+  res.json(mentionedTuits);
+  }
+    catch(e){res.sendStatus(400)}
+    
    };
  }
  
