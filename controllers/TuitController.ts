@@ -49,7 +49,10 @@ export default class TuitController implements ITuitController {
       );
       app.put("/api/tuits/:tid", TuitController.tuitController.updateTuit);
       app.delete("/api/tuits/:tid", TuitController.tuitController.deleteTuit);
-      app.get("/api/tuits/:tid/versions", TuitController.tuitController.getVersions);
+      app.get(
+        "/api/tuits/:tid/versions",
+        TuitController.tuitController.getVersions
+      );
       app.put("/api/tuits/:tid/edit", TuitController.tuitController.editTuit);
     }
     return TuitController.tuitController;
@@ -63,12 +66,11 @@ export default class TuitController implements ITuitController {
    * @param {Response} res Represents response to client, including the
    * body formatted as JSON arrays containing the tuit objects
    */
-  findAllTuits = async(req: Request, res: Response) =>{
+  findAllTuits = async (req: Request, res: Response) => {
     TuitController.tuitDao
       .findAllTuits()
       .then((tuits: Tuit[]) => res.json(tuits));
-    }
-
+  };
 
   /**
    * Retrieves all tuits from the database for a particular user and returns
@@ -140,27 +142,28 @@ export default class TuitController implements ITuitController {
     TuitController.tuitDao
       .updateTuit(req.params.tid, req.body)
       .then((status) => res.send(status));
-  
+
   /**
    * @param {Request} req Represents request from client, including path
    * parameter tid identifying the primary key of the tuit to be modified
    * @param {Response} res Represents response to client, including status
    * on whether updating a tuit was successful or not
    */
-   editTuit = async (req: Request, res: Response) => {
+  editTuit = async (req: Request, res: Response) => {
     //get the tuit from Tuits collection by the req. body id
-    const ogTuit = await TuitController.tuitDao.findTuitById(req.params.tid)
-    // add that tuit to the tuit version 
+    const ogTuit = await TuitController.tuitDao.findTuitById(req.params.tid);
+    // add that tuit to the tuit version
     TuitController.tuitVersionDao
-    //@ts-ignore
-    .createTuitVersion(ogTuit._id,ogTuit.tuit,ogTuit.v!)
+      //@ts-ignore
+      .createTuitVersion(ogTuit._id, ogTuit.tuit, ogTuit.v!);
     //update the tuits text
-    TuitController.tuitDao.updateTuit(req.params.tid,req.body).then((status)=>res.send(status))
+    TuitController.tuitDao
+      .updateTuit(req.params.tid, req.body)
+      .then((status) => res.send(status));
     //update the tuit version
     //@ts-ignore
-    TuitController.tuitDao.updateVersion(req.params.tid)
-   }
-   
+    TuitController.tuitDao.updateVersion(req.params.tid);
+  };
 
   /**
    * @param {Request} req Represents request from client, including path
@@ -171,25 +174,47 @@ export default class TuitController implements ITuitController {
   deleteTuit = (req: Request, res: Response) =>
     TuitController.tuitDao
       .deleteTuit(req.params.tid)
-      .then((status) => res.send(status));
+      .then((statuses) => res.send(statuses));
 
   /**
    * @param {Request} req Represents request from client, including path
-   * parameter tid identifying the primary key of the tuit whose 
+   * parameter tid identifying the primary key of the tuit whose
    * version history to be viewed.
-   * @param {Response} res Represents response to client, array of all the versions of the 
+   * @param {Response} res Represents response to client, array of all the versions of the
    * Tuit.
    */
-  getVersions = async (req: Request, res: Response) =>{
-    const currentTuit = await TuitController.tuitDao.findTuitById(req.params.tid)
+  getVersions = async (req: Request, res: Response) => {
+    const currentTuit = await TuitController.tuitDao.findTuitById(
+      req.params.tid
+    );
     // TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
     // .then((tuitVersion: TuitVersion[]) => res.json(tuitVersion))
-    const currentTuitVersion = {"_id":currentTuit._id,"tuit":currentTuit.tuit,
-        "v":currentTuit.v,"editedOn":currentTuit.postedOn}
-    const prevTuitVersion = await TuitController.tuitVersionDao.findAllPreviousVersions(req.params.tid)
-    var allVersions = Object.assign({},{currentTuitVersion},prevTuitVersion)
-    return(res.json(allVersions))
-    
-  }
-    
+
+    const prevTuitVersion =
+      await TuitController.tuitVersionDao.findAllPreviousVersions(
+        req.params.tid
+      );
+
+    if (!currentTuit) {
+      res.json([]);
+      console.log(prevTuitVersion);
+    } else {
+      const currentTuitVersion = {
+        _id: currentTuit._id,
+        tuit: currentTuit.tuit,
+        v: currentTuit.v,
+        editedOn: currentTuit.postedOn,
+      };
+      const prevTuitVersion =
+        await TuitController.tuitVersionDao.findAllPreviousVersions(
+          req.params.tid
+        );
+      var allVersions = Object.assign(
+        {},
+        { currentTuitVersion },
+        prevTuitVersion
+      );
+      return res.json(allVersions);
+    }
+  };
 };
